@@ -11,7 +11,7 @@
 		<PackageProjectUrl>https://github.com/Analogy-LogViewer/Analogy.LogViewer.LiteDB</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Analogy-LogViewer/Analogy.LogViewer.LiteDB</RepositoryUrl>
 		<PackageIcon>icon.png</PackageIcon>
-		<Description>Implementation of Analogy Log Viewer Data Provider for reading sql lite db files</Description>
+		<Description>Implementation of Analogy Log Viewer Data Provider for reading lite db files</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
