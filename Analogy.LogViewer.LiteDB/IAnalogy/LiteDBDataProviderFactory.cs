@@ -12,7 +12,7 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
 
         public override IEnumerable<IAnalogyDataProvider> DataProviders { get; set; } = new List<IAnalogyDataProvider>
         {
-            new LiteDBBroswerDataProvider(),
+            new LiteDBDataProvider(),
         };
     }
 }

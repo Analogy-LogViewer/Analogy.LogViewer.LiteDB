@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net8.0-windows;net7.0-windows;net6.0-windows;net48;net471</TargetFrameworks>
-		<Version>0.7.1</Version>
+		<Version>0.1.0</Version>
 		<Authors>Lior Banai</Authors>
 		<Company>Analogy.LogViewer</Company>
 		<Product>Analogy.LogViewer.LiteDB</Product>
@@ -18,8 +18,7 @@
 		<PackageReference Include="Analogy.LogViewer.Interfaces" Version="6.0.0.1" />
 		<PackageReference Include="Analogy.CommonUtilities" Version="6.0.0" />
 		<PackageReference Include="Analogy.LogViewer.Template" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Data.LiteDB" Version="8.0.3" />
-		<PackageReference Include="Microsoft.Data.LiteDB.Core" Version="8.0.3" />
+		<PackageReference Include="LiteDB" Version="5.0.19" />
 		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
 	</ItemGroup>
 	<ItemGroup>

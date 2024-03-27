@@ -1,0 +1,153 @@
+﻿using Analogy.Interfaces;
+using Analogy.LogViewer.LiteDB.Properties;
+using Analogy.LogViewer.Template.Managers;
+using LiteDB;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Analogy.LogViewer.LiteDB.IAnalogy
+{
+    public class LiteDBDataProvider : Template.OfflineDataProvider
+    {
+        public override Guid Id { get; set; } = new Guid("25b2b926-47f8-4f13-8db8-0803f8829eba");
+        public override Image? LargeImage { get; set; } = Resources.Analogy_image_32x32;
+        public override Image? SmallImage { get; set; } = Resources.Analogy_image_16x16;
+
+        public override string? OptionalTitle { get; set; } = "LiteDB db browser";
+        public override string FileOpenDialogFilters { get; set; } = "LiteDB db file (*.db)|*.db";
+        public override IEnumerable<string> SupportFormats { get; set; } = new[] { "*.db" };
+        public override string? InitialFolderFullPath { get; set; } = Environment.CurrentDirectory;
+        public override IEnumerable<(string OriginalHeader, string ReplacementHeader)> GetReplacementHeaders()
+            => Array.Empty<(string, string)>();
+        public string Collection { get; set; } = "";
+        public string Sql { get; set; } = "";
+        public const int RESULTLIMIT = 1000;
+        public bool LimitExceeded { get; set; }
+        public override Task InitializeDataProvider(ILogger logger)
+        {
+            //do some initialization for this provider
+            return base.InitializeDataProvider(logger);
+        }
+
+        public override IEnumerable<AnalogyLogMessagePropertyName> HideExistingColumns()
+        {
+            yield return AnalogyLogMessagePropertyName.Date;
+            yield return AnalogyLogMessagePropertyName.Text;
+            yield return AnalogyLogMessagePropertyName.Level;
+            yield return AnalogyLogMessagePropertyName.Class;
+            yield return AnalogyLogMessagePropertyName.Source;
+            yield return AnalogyLogMessagePropertyName.User;
+            yield return AnalogyLogMessagePropertyName.Class;
+            yield return AnalogyLogMessagePropertyName.ProcessId;
+            yield return AnalogyLogMessagePropertyName.ThreadId;
+            yield return AnalogyLogMessagePropertyName.MachineName;
+            yield return AnalogyLogMessagePropertyName.MethodName;
+            yield return AnalogyLogMessagePropertyName.LineNumber;
+            yield return AnalogyLogMessagePropertyName.RawText;
+            yield return AnalogyLogMessagePropertyName.RawTextType;
+            yield return AnalogyLogMessagePropertyName.Id;
+        }
+
+        public override void MessageOpened(IAnalogyLogMessage message)
+        {
+            //nop
+        }
+
+        public override async Task<IEnumerable<IAnalogyLogMessage>> Process(string fileName, CancellationToken token, ILogMessageCreatedHandler messagesHandler)
+        {
+            var messages = new List<IAnalogyLogMessage>();
+            ConnectionString connection = new ConnectionString();
+            connection.Connection = ConnectionType.Direct;
+
+            connection.Filename = fileName;
+            connection.ReadOnly = true;
+            connection.Upgrade = false;
+            connection.Password = null;
+            connection.InitialSize = 0;
+            var _db = new LiteDatabase(connection);
+            try
+            {
+                // force open database
+                var uv = _db.UserVersion;
+                foreach (var col in _db.GetCollectionNames())
+                {
+                    var bd = new BsonDocument();
+                    Sql = $"SELECT $ FROM {col};";
+                    var sql = new StringReader(Sql.Trim());
+
+                    while (sql.Peek() >= 0 && _db != null)
+                    {
+                        using var reader = _db.Execute(sql, bd);
+                        var items = ReadResult(reader);
+                        var sb = new StringBuilder();
+                        using (var writer = new StringWriter(sb))
+                        {
+                            var json = new JsonWriter(writer) { Pretty = true, Indent = 2, };
+                            AnalogyLogMessage m = new AnalogyLogMessage();
+                            m.Source = $"Table: {col}";
+                            foreach (var item in items)
+                            {
+                                var keys = ((BsonDocument)item).Keys.ToList();
+                                var values = ((BsonDocument)item).Values.ToList();
+
+                                for (var i = 0; i < keys.Count; i++)
+                                {
+                                    var key = keys[i];
+                                    var itm = values[i];
+                                    sb.AppendLine($"{key}: {itm}");
+                                    m.AddOrReplaceAdditionalProperty(key, itm.ToString());
+                                }
+                                json.Serialize(item);
+                                m.Text = sb.ToString();
+                                messages.Add(m);
+                                messagesHandler.AppendMessage(m, fileName);
+                            }
+
+                            m.RawText = json.ToString();
+                            m.RawTextType = AnalogyRowTextType.JSON;
+                            sb.AppendLine();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _db?.Dispose();
+            }
+            return messages;
+        }
+        public List<BsonValue> ReadResult(IBsonDataReader reader)
+        {
+            var result = new List<BsonValue>();
+            this.LimitExceeded = false;
+            this.Collection = reader.Collection;
+
+            var index = 0;
+            var hasLimit = this.Sql.IndexOf("LIMIT ", StringComparison.OrdinalIgnoreCase) >= 0;
+
+            while (reader.Read())
+            {
+                if (index++ >= RESULTLIMIT && hasLimit == false)
+                {
+                    this.LimitExceeded = true;
+                    break;
+                }
+
+                result.Add(reader.Current);
+            }
+
+            return result;
+        }
+    }
+}
