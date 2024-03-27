@@ -8,11 +8,12 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
     public class LiteDBDataProviderFactory : DataProvidersFactory
     {
         public override Guid FactoryId { get; set; } = PrimaryFactory.Id;
-        public override string Title { get; set; } = "Analogy LiteDB db browser";
+        public override string Title { get; set; } = "LiteDB File";
 
         public override IEnumerable<IAnalogyDataProvider> DataProviders { get; set; } = new List<IAnalogyDataProvider>
         {
             new LiteDBDataProvider(),
+            new LiteDBTableSelectionDataProvider(),
         };
     }
 }

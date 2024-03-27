@@ -1,4 +1,5 @@
 ﻿using Analogy.Interfaces;
+using Analogy.LogViewer.LiteDB.Forms;
 using Analogy.LogViewer.LiteDB.Properties;
 using Analogy.LogViewer.Template.Managers;
 using LiteDB;
@@ -18,13 +19,13 @@ using System.Threading.Tasks;
 
 namespace Analogy.LogViewer.LiteDB.IAnalogy
 {
-    public class LiteDBDataProvider : Template.OfflineDataProvider
+    public class LiteDBTableSelectionDataProvider : Template.OfflineDataProvider
     {
-        public override Guid Id { get; set; } = new Guid("da3672d7-e16a-4bb2-a991-efaa3e2f7d3b");
+        public override Guid Id { get; set; } = new Guid("641c90dc-6442-40c0-a31e-ffb350d3031e");
         public override Image? LargeImage { get; set; } = Resources.Analogy_image_32x32;
         public override Image? SmallImage { get; set; } = Resources.Analogy_image_16x16;
 
-        public override string? OptionalTitle { get; set; } = "Full Database Load";
+        public override string? OptionalTitle { get; set; } = "Table Selection";
         public override string FileOpenDialogFilters { get; set; } = "LiteDB db file (*.db)|*.db";
         public override IEnumerable<string> SupportFormats { get; set; } = new[] { "*.db" };
         public override string? InitialFolderFullPath { get; set; } = Environment.CurrentDirectory;
@@ -39,6 +40,7 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
             //do some initialization for this provider
             return base.InitializeDataProvider(logger);
         }
+
         public override void MessageOpened(IAnalogyLogMessage message)
         {
             //nop
@@ -60,10 +62,11 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
             {
                 // force open database
                 var uv = _db.UserVersion;
-                foreach (var col in _db.GetCollectionNames())
+                var names = _db.GetCollectionNames().ToList();
+                TableSelectionForm selection = new TableSelectionForm(names, (name) =>
                 {
                     var bd = new BsonDocument();
-                    Sql = $"SELECT $ FROM {col};";
+                    Sql = $"SELECT $ FROM {name};";
                     var sql = new StringReader(Sql.Trim());
 
                     while (sql.Peek() >= 0 && _db != null)
@@ -75,7 +78,7 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
                         {
                             var json = new JsonWriter(writer) { Pretty = true, Indent = 2, };
                             AnalogyLogMessage m = new AnalogyLogMessage();
-                            m.Source = $"Table: {col}";
+                            m.Source = $"Table: {name}";
                             foreach (var item in items)
                             {
                                 var keys = ((BsonDocument)item).Keys.ToList();
@@ -88,6 +91,7 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
                                     sb.AppendLine($"{key}: {itm}");
                                     m.AddOrReplaceAdditionalProperty(key, itm.ToString());
                                 }
+
                                 json.Serialize(item);
                                 m.Text = sb.ToString();
                                 m.RawText = JsonSerializer.Serialize(item);
@@ -95,10 +99,14 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
                                 messages.Add(m);
                                 messagesHandler.AppendMessage(m, fileName);
                             }
+
                             sb.AppendLine();
                         }
                     }
-                }
+                });
+                selection.Show();
+                selection.BringToFront();
+                selection.Focus();
             }
             catch (Exception ex)
             {

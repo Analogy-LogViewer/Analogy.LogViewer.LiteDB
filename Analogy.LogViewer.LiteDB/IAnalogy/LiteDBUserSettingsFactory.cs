@@ -10,26 +10,26 @@ using System.Windows.Forms;
 
 namespace Analogy.LogViewer.LiteDB.IAnalogy
 {
-    public class LiteDBUserSettingsFactory : TemplateUserSettingsFactory
-    {
-        public override Guid FactoryId { get; set; } = PrimaryFactory.Id;
-        public override Guid Id { get; set; } = new Guid("0a2df0d0-9223-4089-bb87-19a50a1793a2");
-        public override UserControl DataProviderSettings { get; set; }
-        public override string Title { get; set; } = "LiteDB db User Settings";
-        public override Image? SmallImage { get; set; } = Resources.Analogy_image_16x16;
-        public override Image? LargeImage { get; set; } = Resources.Analogy_image_32x32;
+    //public class LiteDBUserSettingsFactory : TemplateUserSettingsFactory
+    //{
+    //    public override Guid FactoryId { get; set; } = PrimaryFactory.Id;
+    //    public override Guid Id { get; set; } = new Guid("0a2df0d0-9223-4089-bb87-19a50a1793a2");
+    //    public override UserControl DataProviderSettings { get; set; }
+    //    public override string Title { get; set; } = "LiteDB db User Settings";
+    //    public override Image? SmallImage { get; set; } = Resources.Analogy_image_16x16;
+    //    public override Image? LargeImage { get; set; } = Resources.Analogy_image_32x32;
 
-        public override AnalogyToolTip? ToolTip { get; set; } = new AnalogyToolTip("LiteDB dB", "",
-            "", Resources.Analogy_image_16x16, Resources.Analogy_image_32x32);
+    //    public override AnalogyToolTip? ToolTip { get; set; } = new AnalogyToolTip("LiteDB dB", "",
+    //        "", Resources.Analogy_image_16x16, Resources.Analogy_image_32x32);
 
-        public override void CreateUserControl(ILogger logger)
-        {
-            DataProviderSettings = new UserControl();
-        }
+    //    public override void CreateUserControl(ILogger logger)
+    //    {
+    //        DataProviderSettings = new UserControl();
+    //    }
 
-        public override Task SaveSettingsAsync()
-        {
-            return Task.CompletedTask;
-        }
-    }
+    //    public override Task SaveSettingsAsync()
+    //    {
+    //        return Task.CompletedTask;
+    //    }
+    //}
 }
