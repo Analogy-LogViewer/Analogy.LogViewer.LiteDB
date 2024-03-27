@@ -110,12 +110,11 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
                                 }
                                 json.Serialize(item);
                                 m.Text = sb.ToString();
+                                m.RawText = JsonSerializer.Serialize(item);
+                                m.RawTextType = AnalogyRowTextType.JSON;
                                 messages.Add(m);
                                 messagesHandler.AppendMessage(m, fileName);
                             }
-
-                            m.RawText = json.ToString();
-                            m.RawTextType = AnalogyRowTextType.JSON;
                             sb.AppendLine();
                         }
                     }

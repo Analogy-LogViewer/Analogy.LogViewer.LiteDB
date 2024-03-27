@@ -2,12 +2,12 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net8.0-windows;net7.0-windows;net6.0-windows;net48;net471</TargetFrameworks>
-		<Version>0.2.0</Version>
+		<Version>0.2.1</Version>
 		<Authors>Lior Banai</Authors>
 		<Company>Analogy.LogViewer</Company>
 		<Product>Analogy.LogViewer.LiteDB</Product>
 		<PackageId>Analogy.LogViewer.LiteDB</PackageId>
-		<Copyright>Lior Banai © 2023-2024</Copyright>
+		<Copyright>Lior Banai © 2024</Copyright>
 		<PackageProjectUrl>https://github.com/Analogy-LogViewer/Analogy.LogViewer.LiteDB</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Analogy-LogViewer/Analogy.LogViewer.LiteDB</RepositoryUrl>
 		<PackageIcon>icon.png</PackageIcon>
