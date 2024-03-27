@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+	<PropertyGroup>
+		<TargetFrameworks>net8.0-windows;net7.0-windows;net6.0-windows;net48;net471</TargetFrameworks>
+		<Version>0.7.1</Version>
+		<Authors>Lior Banai</Authors>
+		<Company>Analogy.LogViewer</Company>
+		<Product>Analogy.LogViewer.LiteDB</Product>
+		<PackageId>Analogy.LogViewer.LiteDB</PackageId>
+		<Copyright>Lior Banai © 2023-2024</Copyright>
+		<PackageProjectUrl>https://github.com/Analogy-LogViewer/Analogy.LogViewer.LiteDB</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Analogy-LogViewer/Analogy.LogViewer.LiteDB</RepositoryUrl>
+		<PackageIcon>icon.png</PackageIcon>
+		<Description>Implementation of Analogy Log Viewer Data Provider for reading sql lite db files</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Analogy.LogViewer.Interfaces" Version="6.0.0.1" />
+		<PackageReference Include="Analogy.CommonUtilities" Version="6.0.0" />
+		<PackageReference Include="Analogy.LogViewer.Template" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Data.LiteDB" Version="8.0.3" />
+		<PackageReference Include="Microsoft.Data.LiteDB.Core" Version="8.0.3" />
+		<PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="..\icon.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+</Project>
