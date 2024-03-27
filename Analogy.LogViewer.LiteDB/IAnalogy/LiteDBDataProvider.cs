@@ -20,7 +20,7 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
 {
     public class LiteDBDataProvider : Template.OfflineDataProvider
     {
-        public override Guid Id { get; set; } = new Guid("25b2b926-47f8-4f13-8db8-0803f8829eba");
+        public override Guid Id { get; set; } = new Guid("da3672d7-e16a-4bb2-a991-efaa3e2f7d3b");
         public override Image? LargeImage { get; set; } = Resources.Analogy_image_32x32;
         public override Image? SmallImage { get; set; } = Resources.Analogy_image_16x16;
 

@@ -8,7 +8,7 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
 {
     public class PrimaryFactory : Analogy.LogViewer.Template.PrimaryFactory
     {
-        internal static readonly Guid Id = new Guid("092e0375-a44a-4067-9a50-b2cbbeaf9ce8");
+        internal static readonly Guid Id = new Guid("46147e9b-0f3d-410a-948e-f165af903f6a");
         public override Guid FactoryId { get; set; } = Id;
 
         public override string Title { get; set; } = "Analogy LiteDB";
@@ -17,7 +17,7 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
 
         public override IEnumerable<IAnalogyChangeLog> ChangeLog { get; set; } = new List<AnalogyChangeLog>
         {
-            new AnalogyChangeLog("Initial version", AnalogChangeLogType.None, "Lior Banai", new DateTime(2023, 03, 03), ""),
+            new AnalogyChangeLog("Initial version", AnalogChangeLogType.None, "Lior Banai", new DateTime(2024, 03, 27), ""),
         };
         public override IEnumerable<string> Contributors { get; set; } = new List<string> { "Lior Banai" };
         public override string About { get; set; } = "Analogy LiteDB Data Provider";
