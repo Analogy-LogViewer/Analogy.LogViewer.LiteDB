@@ -74,10 +74,11 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
                         using (var writer = new StringWriter(sb))
                         {
                             var json = new JsonWriter(writer) { Pretty = true, Indent = 2, };
-                            AnalogyLogMessage m = new AnalogyLogMessage();
-                            m.Source = $"Table: {col}";
                             foreach (var item in items)
                             {
+                                sb.Clear();
+                                AnalogyLogMessage m = new AnalogyLogMessage();
+                                m.Source = $"Table: {col}";
                                 var keys = ((BsonDocument)item).Keys.ToList();
                                 var values = ((BsonDocument)item).Values.ToList();
 
@@ -95,7 +96,6 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
                                 messages.Add(m);
                                 messagesHandler.AppendMessage(m, fileName);
                             }
-                            sb.AppendLine();
                         }
                     }
                 }
