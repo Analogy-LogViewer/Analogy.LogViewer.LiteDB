@@ -1,4 +1,5 @@
 ﻿using Analogy.Interfaces;
+using Analogy.Interfaces.DataTypes;
 using Analogy.LogViewer.LiteDB.Properties;
 using Analogy.LogViewer.Template.Managers;
 using LiteDB;
