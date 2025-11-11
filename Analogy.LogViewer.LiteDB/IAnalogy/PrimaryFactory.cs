@@ -1,4 +1,5 @@
 ﻿using Analogy.Interfaces;
+using Analogy.Interfaces.DataTypes;
 using Analogy.LogViewer.LiteDB.Properties;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Drawing;
 
 namespace Analogy.LogViewer.LiteDB.IAnalogy
 {
-    public class PrimaryFactory : Analogy.LogViewer.Template.PrimaryFactory
+    public class PrimaryFactory : Analogy.LogViewer.Template.PrimaryFactoryWinForms
     {
         internal static readonly Guid Id = new Guid("46147e9b-0f3d-410a-948e-f165af903f6a");
         public override Guid FactoryId { get; set; } = Id;

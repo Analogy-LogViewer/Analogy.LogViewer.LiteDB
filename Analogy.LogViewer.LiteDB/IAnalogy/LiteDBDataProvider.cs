@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Analogy.LogViewer.LiteDB.IAnalogy
 {
-    public class LiteDBDataProvider : Template.OfflineDataProvider
+    public class LiteDBDataProvider : Template.OfflineDataProviderWinForms
     {
         public override Guid Id { get; set; } = new Guid("da3672d7-e16a-4bb2-a991-efaa3e2f7d3b");
         public override Image? LargeImage { get; set; } = Resources.Analogy_image_32x32;
@@ -22,10 +22,10 @@ namespace Analogy.LogViewer.LiteDB.IAnalogy
 
         public override string? OptionalTitle { get; set; } = "Full Database Load";
         public override string FileOpenDialogFilters { get; set; } = "LiteDB db file (*.db)|*.db";
-        public override IEnumerable<string> SupportFormats { get; set; } = new[] { "*.db" };
+        public override IEnumerable<string> SupportFormats { get; set; } = ["*.db"];
         public override string? InitialFolderFullPath { get; set; } = Environment.CurrentDirectory;
         public override IEnumerable<(string OriginalHeader, string ReplacementHeader)> GetReplacementHeaders()
-            => Array.Empty<(string, string)>();
+            => [];
         public string Collection { get; set; } = "";
         public string Sql { get; set; } = "";
         public const int RESULTLIMIT = 1000;
