@@ -2,6 +2,7 @@
 using Analogy.Interfaces.DataTypes;
 using Analogy.LogViewer.LiteDB.Forms;
 using Analogy.LogViewer.LiteDB.Properties;
+using Analogy.LogViewer.Template.WinForms;
 using LiteDB;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Analogy.LogViewer.LiteDB.IAnalogy
 {
-    public class LiteDBTableSelectionDataProvider : Template.OfflineDataProviderWinForms
+    public class LiteDBTableSelectionDataProvider : OfflineDataProviderWinForms
     {
         public override Guid Id { get; set; } = new Guid("641c90dc-6442-40c0-a31e-ffb350d3031e");
         public override Image? LargeImage { get; set; } = Resources.Analogy_image_32x32;
